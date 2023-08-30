@@ -1,7 +1,6 @@
 import React from "react";
 import MovieCard from "./MovieCard";
 import "./Styles/movieCard.css";
-import TVCard from "./TVCard";
 import PersonCard from "./PersonCard";
 export default function CardContainer(props) {
     let { cardList, type, title } = props;
@@ -9,13 +8,9 @@ export default function CardContainer(props) {
         <div className="card-container">
             <h2>{title}</h2>
             <div className="card-slider">
-                {type === "Movie"
+                {type === "Movie" || type === "Series"
                     ? cardList.map((movie, key) => (
-                          <MovieCard key={key} details={movie} />
-                      ))
-                    : type === "Series"
-                    ? cardList.map((tv, key) => (
-                          <TVCard key={key} details={tv} />
+                          <MovieCard type={type} key={key} details={movie} />
                       ))
                     : cardList.map((person, key) => (
                           <PersonCard key={key} details={person} />

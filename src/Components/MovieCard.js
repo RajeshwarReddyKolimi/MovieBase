@@ -2,13 +2,24 @@ import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import "./Styles/movieCard.css";
 import MoviePopup from "./MoviePopup";
+import TVPopup from "./TVPopup";
 
 export default function MovieCard(props) {
-    const [showMovie, setShowMovie] = useState(false);
-    const { details } = props;
+    const { details, type } = props;
+    const [showPopup, setShowPopup] = useState(false);
+    const [year, setYear] = useState("");
+    const [title, setTitle] = useState("");
+    const [rating, setRating] = useState(details.vote_average.toFixed(1));
+    if (type === "Movie") {
+        setYear(details.release_date.substring(0, 4));
+        setTitle(details.title);
+    } else {
+        setYear(details.first_air_date.substring(0, 4));
+        setTitle(details.name);
+    }
     return (
         <div>
-            <div className="card" onClick={() => setShowMovie(true)}>
+            <div className="card" onClick={() => setShowPopup(true)}>
                 <img
                     className="movie-poster"
                     src={`${
@@ -16,23 +27,26 @@ export default function MovieCard(props) {
                             ? `https://image.tmdb.org/t/p/w1280${details.poster_path}`
                             : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
                     }`}
-                    alt={`${details.title}`}
+                    alt={`${title}`}
                 />
                 <div className="movie-info">
                     <div className="rating">
                         <AiFillStar style={{ color: "rgb(226, 176, 49)" }} />
                         {details.vote_average.toFixed(1)}
                     </div>
-                    {details.release_date.substring(0, 4)}
+                    {year}
                 </div>
                 <div className="movie-title">
-                    <h4>{details.title}</h4>
+                    <h4>{title}</h4>
                 </div>
             </div>
 
-            {showMovie && (
-                <MoviePopup details={details} setShowMovie={setShowMovie} />
-            )}
+            {showPopup &&
+                (type === "Movie" ? (
+                    <MoviePopup details={details} setShowMovie={setShowPopup} />
+                ) : (
+                    <TVPopup details={details} setShowTV={setShowPopup} />
+                ))}
         </div>
     );
 }
