@@ -21,6 +21,7 @@ export default function MovieCard(props) {
         <div>
             <div className="card" onClick={() => setShowPopup(true)}>
                 <img
+                    loading="lazy"
                     className="movie-poster"
                     src={`${
                         details.poster_path !== null

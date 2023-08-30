@@ -81,10 +81,7 @@ export default function MoviePopup(props) {
             url = `https://api.themoviedb.org/3/movie/${details.id}/credits`;
         else url = `https://api.themoviedb.org/3/tv/${details.id}/credits`;
         try {
-            const response = await fetch(
-                `https://api.themoviedb.org/3/movie/${details.id}/credits`,
-                options
-            );
+            const response = await fetch(url, options);
             const data = await response.json();
             const result = await data.cast;
             setCast([...result]);

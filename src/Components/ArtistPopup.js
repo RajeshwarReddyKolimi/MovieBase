@@ -28,9 +28,11 @@ export default function ArtistPopup(props) {
                 options
             );
             const data = await response.json();
+            let birthday = "";
+            if (data.birthday) birthday = formatDate(data.birthday);
             setBio((prev) => ({
                 ...prev,
-                birthday: formatDate(data.birthday),
+                birthday: birthday,
                 biography: data.biography,
             }));
         } catch (err) {

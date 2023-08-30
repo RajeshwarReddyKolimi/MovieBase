@@ -33,6 +33,7 @@
     width: 100%;
     height: 90vh;
     overflow: auto;
+    /* margin-bottom: 2rem; */
 }
 .search-result {
     display: flex;
