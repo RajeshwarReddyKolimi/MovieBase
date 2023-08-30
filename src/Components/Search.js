@@ -36,12 +36,12 @@ export default function Search() {
     async function fetchMovies(query) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&per_page=40`,
+                `https://api.themoviedb.org/3/search/movie?query=${query}&page=1&per_page=40`,
                 options
             );
             const data = await response.json();
             const results = await data.results;
-            setSearchMovie((prev) => [...prev, ...results]);
+            setSearchMovie((prev) => [ ...results]);
         } catch (err) {
             console.error(err);
         }
@@ -49,12 +49,12 @@ export default function Search() {
     async function fetchSeries(query) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/search/tv?query=${query}&page=${page}`,
+                `https://api.themoviedb.org/3/search/tv?query=${query}&page=1`,
                 options
             );
             const data = await response.json();
             const results = await data.results;
-            setSearchTV((prev) => [...prev, ...results]);
+            setSearchTV((prev) => [ ...results]);
         } catch (err) {
             console.error(err);
         }
@@ -62,12 +62,12 @@ export default function Search() {
     async function fetchArtist(query) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/search/person?query=${query}&page=${page}`,
+                `https://api.themoviedb.org/3/search/person?query=${query}&page=1`,
                 options
             );
             const data = await response.json();
             const results = await data.results;
-            setSearchPerson((prev) => [...prev, ...results]);
+            setSearchPerson((prev) => [ ...results]);
         } catch (err) {
             console.error(err);
         }

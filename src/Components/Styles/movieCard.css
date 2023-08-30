@@ -1,20 +1,22 @@
 .card-container {
     color: white;
 }
+.card-container-title {
+    padding: 0.5rem 2rem;
+}
 .card-slider {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     /* align-items: stretch; */
-    gap: 2rem;
+    gap: 0rem;
     color: white;
     transition: transform 1s;
     overflow: auto;
     padding: 1rem;
-    
 }
 .card-slider::-webkit-scrollbar {
-  display: none; /* For WebKit browsers (e.g., Chrome, Safari) */
+    display: none;
 }
 .card {
     cursor: pointer;
@@ -51,11 +53,11 @@
     padding: 0.5rem;
 }
 .artist-card {
-    padding: 1rem;
+    padding: 0rem 1rem;
     text-align: center;
 }
 .artist-image {
-    width: 150px;
+    width: 180px;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;

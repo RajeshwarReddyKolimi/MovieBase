@@ -19,8 +19,8 @@ export default function PersonCard(props) {
                     alt="Profile_image"
                     className="artist-image"
                 />
-                <h4>{details.original_name}</h4>
-                <div>{details.known_for_department}</div>
+                <h5>{details.original_name}</h5>
+                <h6>{details.known_for_department}</h6>
             </div>
             {showDetails && (
                 <ArtistPopup

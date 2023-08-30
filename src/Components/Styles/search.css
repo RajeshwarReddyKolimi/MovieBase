@@ -20,14 +20,14 @@
 .search-div {
     position: fixed;
     overflow: auto;
-    /* top: 5rem; */
+    top: 5rem;
     left: 0%;
     width: 100vw;
     /* height: calc(100vh-5rem); */
     color: white;
     background-color: rgb(15, 31, 36);
     padding: 1rem;
-    z-index: 4;
+    z-index: 5;
 }
 .search-container {
     width: 100%;

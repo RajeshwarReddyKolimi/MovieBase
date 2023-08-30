@@ -30,12 +30,35 @@ export default function ArtistPopup(props) {
             const data = await response.json();
             setBio((prev) => ({
                 ...prev,
-                birthday: data.birthday,
+                birthday: formatDate(data.birthday),
                 biography: data.biography,
             }));
         } catch (err) {
             console.error(err);
         }
+    }
+    function formatDate(inputDate) {
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+
+        const [year, month, day] = inputDate.split("-");
+        const formattedDate = `${parseInt(day, 10)} ${
+            months[parseInt(month, 10) - 1]
+        }, ${year}`;
+
+        return formattedDate;
     }
     async function getMovieList() {
         try {
@@ -76,7 +99,6 @@ export default function ArtistPopup(props) {
                     <div className="artist-details">
                         <h2>{details.original_name}</h2>
                         <h4>{details.known_for_department}</h4>
-                        <div>{details.gender === 1 ? "Female" : "Male"}</div>
                         <div>{bio.birthday}</div>
                         <div>{bio.biography}</div>
                     </div>

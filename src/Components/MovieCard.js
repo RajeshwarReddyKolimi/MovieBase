@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiFillStar } from "react-icons/ai";
 import "./Styles/movieCard.css";
 import MoviePopup from "./MoviePopup";
-import TVPopup from "./TVPopup";
 
 export default function MovieCard(props) {
     const { details, type } = props;
     const [showPopup, setShowPopup] = useState(false);
     const [year, setYear] = useState("");
     const [title, setTitle] = useState("");
-    const [rating, setRating] = useState(details.vote_average.toFixed(1));
-    if (type === "Movie") {
-        setYear(details.release_date.substring(0, 4));
-        setTitle(details.title);
-    } else {
-        setYear(details.first_air_date.substring(0, 4));
-        setTitle(details.name);
-    }
+    useEffect(() => {
+        if (type === "Movie") {
+            setYear(details.release_date.substring(0, 4));
+            setTitle(details.title);
+        } else {
+            setYear(details.first_air_date.substring(0, 4));
+            setTitle(details.name);
+        }
+    }, []);
     return (
         <div>
             <div className="card" onClick={() => setShowPopup(true)}>
@@ -29,7 +29,7 @@ export default function MovieCard(props) {
                     }`}
                     alt={`${title}`}
                 />
-                <div className="movie-info">
+                {/* <div className="movie-info">
                     <div className="rating">
                         <AiFillStar style={{ color: "rgb(226, 176, 49)" }} />
                         {details.vote_average.toFixed(1)}
@@ -38,15 +38,16 @@ export default function MovieCard(props) {
                 </div>
                 <div className="movie-title">
                     <h4>{title}</h4>
-                </div>
+                </div> */}
             </div>
 
-            {showPopup &&
-                (type === "Movie" ? (
-                    <MoviePopup details={details} setShowMovie={setShowPopup} />
-                ) : (
-                    <TVPopup details={details} setShowTV={setShowPopup} />
-                ))}
+            {showPopup && (
+                <MoviePopup
+                    type={type}
+                    details={details}
+                    setShowPopup={setShowPopup}
+                />
+            )}
         </div>
     );
 }
