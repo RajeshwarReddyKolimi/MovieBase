@@ -1,0 +1,62 @@
+.card-container {
+    color: white;
+}
+.card-slider {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /* align-items: stretch; */
+    gap: 2rem;
+    color: white;
+    transition: transform 1s;
+    overflow: auto;
+    padding: 1rem;
+    
+}
+.card-slider::-webkit-scrollbar {
+  display: none; /* For WebKit browsers (e.g., Chrome, Safari) */
+}
+.card {
+    cursor: pointer;
+    text-overflow: clip;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    transition: 0.4s;
+}
+.card:hover {
+    /* border: 1px solid white; */
+    transform: scale(1.05);
+}
+.movie-poster {
+    width: 200px;
+    min-width: 200px;
+    /* aspect-ratio: auto 3/4; */
+    aspect-ratio: 6/9;
+}
+.movie-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+.rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.movie-title {
+    text-align: left;
+    padding: 0.5rem;
+}
+.artist-card {
+    padding: 1rem;
+    text-align: center;
+}
+.artist-image {
+    width: 150px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+}

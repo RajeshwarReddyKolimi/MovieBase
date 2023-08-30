@@ -1,0 +1,24 @@
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    gap: 1rem;
+    padding: 0.5rem;
+    z-index: 10;
+
+    background-color: #091214;
+}
+.header li {
+    padding: 0.5rem;
+}
+li {
+    list-style: none;
+}
+.flex-buffer {
+    flex-grow: 1;
+}
