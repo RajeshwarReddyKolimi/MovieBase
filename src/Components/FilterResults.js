@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Styles/filterResults.css";
 import env from "react-dotenv";
 import CardContainer from "./CardContainer";
-export default function FilterSeriesResults(props) {
+export default function FilterResults(props) {
     const {
         genre = 0,
         sort = "popularity.desc",
@@ -13,6 +13,7 @@ export default function FilterSeriesResults(props) {
         max_time = 0,
         min_rating = 0,
         max_rating = 0,
+        type,
     } = props;
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
@@ -28,13 +29,18 @@ export default function FilterSeriesResults(props) {
         fetchResults();
     }, [props]);
     async function fetchResults() {
-        let url = `https://api.themoviedb.org/3/discover/tv?`;
+        let url =
+            type === "Movie"
+                ? `https://api.themoviedb.org/3/discover/movie?`
+                : `https://api.themoviedb.org/3/discover/tv?`;
         url = url + `sort_by=${sort}&watch_region=IN&`;
         if (genre !== 0) {
             url = url + `with_genres=${genre}&`;
         }
         if (release_year >= 1800 && release_year <= 3000) {
-            url = url + `first_air_date_year=${release_year}&`;
+            if (type === "Movie")
+                url = url + `primary_release_year=${release_year}&`;
+            else url = url + `first_air_date_year=${release_year}&`;
         }
         if (org_lang !== "") {
             url = url + `with_original_language=${org_lang}&`;
@@ -67,7 +73,7 @@ export default function FilterSeriesResults(props) {
     return (
         <div className="filter-results">
             <CardContainer
-                type="Series"
+                type={type}
                 title="Search Results"
                 cardList={results}
             />

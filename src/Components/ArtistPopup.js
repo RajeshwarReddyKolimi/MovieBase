@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 import "./Styles/moviePopup.css";
 import env from "react-dotenv";
 export default function ArtistPopup(props) {
-    const { details, setShowDetails } = props;
+    const { details } = props;
     const [movieList, setMovieList] = useState([]);
     const [bio, setBio] = useState({});
     const apiKey = env.API_KEY;
@@ -20,7 +20,7 @@ export default function ArtistPopup(props) {
     useEffect(() => {
         getMovieList();
         getDetails();
-    }, []);
+    }, [details]);
     async function getDetails() {
         try {
             const response = await fetch(
@@ -34,6 +34,7 @@ export default function ArtistPopup(props) {
                 ...prev,
                 birthday: birthday,
                 biography: data.biography,
+                birthplace: data.place_of_birth,
             }));
         } catch (err) {
             console.error(err);
@@ -78,45 +79,40 @@ export default function ArtistPopup(props) {
         }
     }
     return (
-        <div
-            className="movie-popup-overlay"
-            onClick={(e) => {
-                if (e.target.className !== "movie-popup-overlay") return;
-                setShowDetails(false);
-            }}
-        >
-            <div className="movie-popup">
-                <div className="artist-container">
-                    <div>
-                        <img
-                            src={`${
-                                details.profile_path
-                                    ? `https://image.tmdb.org/t/p/w500${details.profile_path}`
-                                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
-                            }`}
-                            alt="Profile_image"
-                            className="artist-popup-image"
-                        />
-                    </div>
-                    <div className="artist-details">
-                        <h2>{details.original_name}</h2>
-                        <h4>{details.known_for_department}</h4>
-                        <div>{bio.birthday}</div>
-                        <div>{bio.biography}</div>
-                    </div>
+        <div className="movie-popup">
+            <div className="artist-container">
+                <div>
+                    <img
+                        src={`${
+                            details.profile_path
+                                ? `https://image.tmdb.org/t/p/w500${details.profile_path}`
+                                : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
+                        }`}
+                        alt="Profile_image"
+                        className="artist-popup-image"
+                    />
                 </div>
-                <CardContainer
-                    type="Movie"
-                    title="Famous Movies"
-                    cardList={movieList}
-                />
-                <MdClose
-                    className="movie-popup-close"
-                    onClick={() => {
-                        setShowDetails(false);
-                    }}
-                />
+                <div className="artist-details">
+                    <h2 style={{ textAlign: "center" }}>
+                        {details.name}
+                    </h2>
+                    <h3 style={{ textAlign: "center" }}>
+                        {details.known_for_department}
+                    </h3>
+                    <div>
+                        <b>Date of Birth:</b> {bio.birthday}
+                    </div>
+                    <div>
+                        <b>Place of Birth:</b> {bio.birthplace}
+                    </div>
+                    <div>{bio.biography}</div>
+                </div>
             </div>
+            <CardContainer
+                type="Movie"
+                title="Famous Movies"
+                cardList={movieList}
+            />
         </div>
     );
 }

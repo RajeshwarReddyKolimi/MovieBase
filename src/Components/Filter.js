@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Styles/filterOptions.css";
-import FilterMoviesResults from "./FilterMoviesResults";
+import FilterResults from "./FilterResults";
 import env from "react-dotenv";
-
-export default function FilterMovies() {
+export default function Filter(props) {
     const yearRef = useRef(null);
     const minRatingRef = useRef(null);
     const maxRatingRef = useRef(null);
@@ -37,9 +36,13 @@ export default function FilterMovies() {
     };
 
     useEffect(() => {
-        fetchAPI("genre/movie/list", setGenreList);
+        let urlType = props.type === "Movie" ? "movie" : "tv";
+        fetchAPI(`genre/${urlType}/list`, setGenreList);
         fetchAPI("configuration/languages", setLanguagesList);
-        fetchAPI("watch/providers/movie?watch_region=IN", setStreamersList);
+        fetchAPI(
+            `watch/providers/${urlType}?watch_region=IN`,
+            setStreamersList
+        );
     }, []);
 
     async function fetchAPI(endpoint, setter) {
@@ -78,6 +81,8 @@ export default function FilterMovies() {
                     className="text-input"
                     type="number"
                     placeholder="year"
+                    min={1800}
+                    max={2050}
                 />
                 <input
                     ref={minRatingRef}
@@ -85,6 +90,7 @@ export default function FilterMovies() {
                     type="number"
                     placeholder="Minimum rating"
                     min={0}
+                    max={10}
                 />
                 <input
                     ref={maxRatingRef}
@@ -92,6 +98,7 @@ export default function FilterMovies() {
                     type="number"
                     placeholder="Maximum rating"
                     max={10}
+                    min={0}
                 />
                 <input
                     ref={minRuntimeRef}
@@ -105,6 +112,7 @@ export default function FilterMovies() {
                     className="text-input"
                     type="number"
                     placeholder="Maximum runtime"
+                    min={0}
                 />
                 <select
                     className="text-input"
@@ -149,7 +157,7 @@ export default function FilterMovies() {
                     Search
                 </button>
             </form>
-            <FilterMoviesResults
+            <FilterResults
                 release_year={year}
                 min_time={minRuntime}
                 max_time={maxRuntime}
@@ -158,6 +166,7 @@ export default function FilterMovies() {
                 genre={genres}
                 org_lang={language}
                 ott={streamer}
+                type={props.type}
             />
         </div>
     );

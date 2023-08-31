@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./Header";
-import FilterMovies from "./FilterMovies";
+import Filter from "./Filter";
 import "./Styles/discover.css";
-export default function Discover() {
+export default function Discover(props) {
     return (
         <div>
             <Header />
-            <FilterMovies />
+            <Filter type={props.type} />
         </div>
     );
 }

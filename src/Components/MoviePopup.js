@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./Styles/moviePopup.css";
+// import "./Styles/moviePopup.css";
 import { MdClose } from "react-icons/md";
 import env from "react-dotenv";
 import { AiFillStar } from "react-icons/ai";
 import CardContainer from "./CardContainer";
 export default function MoviePopup(props) {
-    const { details, setShowPopup, type } = props;
+    const { details, type } = props;
     const [streamer, setStreamer] = useState([]);
     const [similar, setSimilar] = useState([]);
     const [cast, setCast] = useState([]);
@@ -14,6 +14,7 @@ export default function MoviePopup(props) {
     const [runtime, setRuntime] = useState(0);
     const [seasons, setSeasons] = useState(null);
     const [episodes, setEpisodes] = useState(null);
+    const [opened, setOpened] = useState(false);
 
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
@@ -25,6 +26,8 @@ export default function MoviePopup(props) {
         },
     };
     useEffect(() => {
+        window.scrollTo(0, 0);
+        setOpened(true);
         if (type === "Movie") {
             setYear(details.release_date.substring(0, 4));
             setTitle(details.title);
@@ -35,7 +38,7 @@ export default function MoviePopup(props) {
         getStreamer();
         getSimilar();
         getCast();
-    }, []);
+    }, [details]);
     async function getStreamer(e) {
         let url = "";
         if (type === "Movie")
@@ -131,82 +134,63 @@ export default function MoviePopup(props) {
         }
     }
     return (
-        <div
-            className="movie-popup-overlay"
-            onClick={(e) => {
-                if (e.target.className !== "movie-popup-overlay") return;
-                setShowPopup(false);
-            }}
-        >
-            <div className="movie-popup">
-                <div className="movie-popup-buffer">
-                    <img
-                        className="movie-image"
-                        src={`${
-                            details.backdrop_path !== null
-                                ? `https://image.tmdb.org/t/p/original${details.backdrop_path}`
-                                : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
-                        }`}
-                        alt={title}
-                    />
-                    <div className="movie-details">
-                        <div className="movie-details-buffer">
-                            <h1 className="popup-movie-title">{title}</h1>
-                            <div className="movie-header">
-                                <h5 className="movie-year">{year}</h5>
-                                <h5 className="movie-rating">
-                                    {details.vote_average.toFixed(1)}
-                                    <AiFillStar
-                                        style={{ color: "rgb(226, 176, 49)" }}
-                                    />
-                                </h5>
-                                {type === "Movie" && <h5>{runtime} min</h5>}
-                                {type === "Series" && (
-                                    <h5>Seasons: {seasons}</h5>
-                                )}
-                                {type === "Series" && (
-                                    <h5>Episodes: {episodes}</h5>
-                                )}
-                            </div>
-                            <div className="movie-overview">
-                                {details.overview}
-                            </div>
+        <div className={`movie-popup ${opened && "movie-popup-opened"}`}>
+            <div className="movie-popup-buffer">
+                <img
+                    className="movie-image"
+                    src={`${
+                        details.backdrop_path !== null
+                            ? `https://image.tmdb.org/t/p/original${details.backdrop_path}`
+                            : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
+                    }`}
+                    alt={title}
+                />
+                <div className="image-overlay"></div>
+                <div className="movie-details">
+                    <div className="movie-details-buffer">
+                        <h1 className="popup-movie-title">{title}</h1>
+                        <div className="movie-header">
+                            <h4 className="movie-year">{year}</h4>
+                            <h4 className="movie-rating">
+                                {details.vote_average.toFixed(1)}
+                                <AiFillStar
+                                    style={{ color: "rgb(226, 176, 49)" }}
+                                />
+                            </h4>
+                            {type === "Movie" && <h4>{runtime} min</h4>}
+                            {type === "Series" && <h4>Seasons: {seasons}</h4>}
+                            {type === "Series" && <h4>Episodes: {episodes}</h4>}
                         </div>
+                        <div className="movie-overview">{details.overview}</div>
                     </div>
                 </div>
-                <div className="stream-list">
-                    <div className="stream-header">Where to watch:</div>
-                    {streamer.length === 0 ? (
-                        <div className="stream-name">NA</div>
-                    ) : (
-                        streamer.map((stream, key) => (
-                            <img
-                                className="stream-img"
-                                key={key}
-                                src={`https://image.tmdb.org/t/p/original${stream.logo}`}
-                                alt="Logo"
-                                title={stream.name}
-                            />
-                        ))
-                    )}
-                </div>
-                <CardContainer
-                    type="Artist"
-                    title="Cast and Crew"
-                    cardList={cast}
-                />
-                <CardContainer
-                    type={type}
-                    title={`Similar ${type}`}
-                    cardList={similar}
-                />
-                <MdClose
-                    className="movie-popup-close"
-                    onClick={() => {
-                        setShowPopup(false);
-                    }}
-                />
             </div>
+            <div className="stream-list">
+                <div className="stream-header">Where to watch:</div>
+                {streamer.length === 0 ? (
+                    <div className="stream-name">NA</div>
+                ) : (
+                    streamer.map((stream, key) => (
+                        <img
+                            className="stream-img"
+                            key={key}
+                            src={`https://image.tmdb.org/t/p/original${stream.logo}`}
+                            alt="Logo"
+                            title={stream.name}
+                        />
+                    ))
+                )}
+            </div>
+            <CardContainer
+                type="Artist"
+                title="Cast and Crew"
+                cardList={cast}
+            />
+            <CardContainer
+                type={type}
+                title={`Similar ${type}`}
+                cardList={similar}
+            />
         </div>
     );
 }

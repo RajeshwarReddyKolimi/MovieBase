@@ -1,19 +1,22 @@
 .card-container {
     color: white;
+    padding: 0rem 1.5rem;
 }
 .card-container-title {
-    padding: 0.5rem 2rem;
+    font-size: 2rem;
+    padding: 0.5rem;
 }
 .card-slider {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     /* align-items: stretch; */
-    gap: 0rem;
+    gap: 2rem;
     color: white;
     transition: transform 1s;
-    overflow: auto;
-    padding: 1rem;
+    overflow-x: auto;
+    overflow-y: overflow;
+    padding: 0.5rem 0rem;
 }
 .card-slider::-webkit-scrollbar {
     display: none;
@@ -22,8 +25,6 @@
     cursor: pointer;
     text-overflow: clip;
     padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid transparent;
     transition: 0.4s;
 }
 .card:hover {
@@ -32,7 +33,6 @@
 }
 .movie-poster {
     width: 200px;
-    min-width: 200px;
     /* aspect-ratio: auto 3/4; */
     aspect-ratio: 6/9;
 }
@@ -55,10 +55,30 @@
 .artist-card {
     padding: 0rem 1rem;
     text-align: center;
+    color: white;
 }
 .artist-image {
     width: 180px;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
+}
+@media screen and (max-width: 768px) {
+    .card-container-title {
+        font-size: 1.5rem;
+    }
+}
+@media screen and (max-width: 425px) {
+    .card-container {
+        padding: 0rem 0.5rem;
+    }
+    .artist-image {
+        width: 140px;
+    }
+    .card-slider {
+        gap: 1rem;
+    }
+    .movie-poster {
+        width: 180px;
+    }
 }
