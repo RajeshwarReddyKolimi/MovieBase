@@ -24,11 +24,12 @@
     color: white;
 }
 .search-div {
-    position: fixed;
+    position: absolute;
     overflow: auto;
     top: 5rem;
-    left: 0%;
-    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
     /* height: calc(100vh-5rem); */
     color: white;
     background-color: rgb(15, 31, 36);
@@ -40,6 +41,9 @@
     height: 90vh;
     overflow: auto;
     /* margin-bottom: 2rem; */
+}
+.search-container::-webkit-scrollbar{
+    display: none;
 }
 .search-result {
     display: flex;

@@ -11,6 +11,7 @@ export default function Filter(props) {
     const genreRef = useRef(null);
     const languageRef = useRef(null);
     const streamerRef = useRef(null);
+    const sortRef = useRef(null);
 
     const [year, setYear] = useState(0);
     const [minRating, setMinRating] = useState(0);
@@ -23,6 +24,7 @@ export default function Filter(props) {
     const [genres, setGenres] = useState("");
     const [language, setLanguage] = useState("");
     const [streamer, setStreamer] = useState("");
+    const [sort, setSort] = useState("");
 
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
@@ -70,13 +72,16 @@ export default function Filter(props) {
         setGenres(genreRef.current.value);
         setLanguage(languageRef.current.value);
         setStreamer(streamerRef.current.value);
+        setSort(sortRef.current.value);
     }
 
     return (
         <div className="filter-options">
             <form onSubmit={handleSubmit}>
                 <h4>Filter</h4>
+
                 <input
+                    onChange={handleSubmit}
                     ref={yearRef}
                     className="text-input"
                     type="number"
@@ -85,36 +90,41 @@ export default function Filter(props) {
                     max={2050}
                 />
                 <input
+                    onChange={handleSubmit}
                     ref={minRatingRef}
                     className="text-input"
                     type="number"
-                    placeholder="Minimum rating"
+                    placeholder="Rating from"
                     min={0}
                     max={10}
                 />
                 <input
+                    onChange={handleSubmit}
                     ref={maxRatingRef}
                     className="text-input"
                     type="number"
-                    placeholder="Maximum rating"
+                    placeholder="Rating to"
                     max={10}
                     min={0}
                 />
                 <input
+                    onChange={handleSubmit}
                     ref={minRuntimeRef}
                     className="text-input"
                     type="number"
-                    placeholder="Minimum runtime"
+                    placeholder="Runtime from"
                     min={0}
                 />
                 <input
+                    onChange={handleSubmit}
                     ref={maxRuntimeRef}
                     className="text-input"
                     type="number"
-                    placeholder="Maximum runtime"
+                    placeholder="Runtime to"
                     min={0}
                 />
                 <select
+                    onChange={handleSubmit}
                     className="text-input"
                     ref={genreRef}
                     id="genresList"
@@ -128,6 +138,7 @@ export default function Filter(props) {
                     ))}
                 </select>
                 <select
+                    onChange={handleSubmit}
                     className="text-input"
                     ref={languageRef}
                     id="langs"
@@ -141,6 +152,7 @@ export default function Filter(props) {
                     ))}
                 </select>
                 <select
+                    onChange={handleSubmit}
                     className="text-input"
                     ref={streamerRef}
                     id="streamers"
@@ -153,9 +165,17 @@ export default function Filter(props) {
                         </option>
                     ))}
                 </select>
-                <button type="submit" className="button-input">
-                    Search
-                </button>
+                <select
+                    onChange={handleSubmit}
+                    className="text-input"
+                    ref={sortRef}
+                    id="sortType"
+                    name="sortType"
+                >
+                    <option value="popularity.desc">Popularity </option>
+                    <option value="vote_average.desc">Rating</option>
+                    <option value="primary_release_date.desc">Year</option>
+                </select>
             </form>
             <FilterResults
                 release_year={year}
@@ -166,6 +186,7 @@ export default function Filter(props) {
                 genre={genres}
                 org_lang={language}
                 ott={streamer}
+                sort={sort}
                 type={props.type}
             />
         </div>

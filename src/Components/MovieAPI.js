@@ -1,26 +1,66 @@
 import React from "react";
 import Header from "./Header";
-import TrendingMovie from "./TrendingMovie";
-import TrendingTV from "./TrendingTV";
 import TrendingArtist from "./TrendingArtist";
-import Discover from "./Discover";
-import PopularMovie from "./PopularMovie";
 import PopularArtist from "./PopularArtist";
-import PopularTV from "./PopularTV";
-import TopRatedTV from "./TopRatedTV";
-import TopRatedMovie from "./TopRatedMovie";
-
+import HomeList from "./HomeList";
 export default function MovieAPI() {
     return (
         <div>
             <Header />
-            <TrendingMovie />
-            <TrendingTV />
+            <div style={{ marginTop: "5rem" }}></div>
+            <HomeList
+                type="Movie"
+                title="Trending Movies"
+                endpoint="trending/movie/week"
+            />
+            <HomeList
+                type="Series"
+                title="Trending Series"
+                endpoint="trending/tv/week"
+            />
+            <HomeList
+                type="Movie"
+                title="Top Rated Movies"
+                endpoint="movie/top_rated"
+            />
+            <HomeList
+                type="Series"
+                title="Top Rated Series"
+                endpoint="tv/top_rated"
+            />
+            <HomeList
+                type="Movie"
+                title="Popular Movies"
+                endpoint="movie/popular"
+            />
+            <HomeList
+                type="Series"
+                title="Popular Series"
+                endpoint="tv/popular"
+            />
+            <HomeList
+                type="Movie"
+                title="Recent Movies"
+                endpoint="movie/now_playing"
+            />
+            <HomeList
+                type="Series"
+                title="Recent Series"
+                endpoint="tv/airing_today"
+            />
+            <HomeList
+                type="Movie"
+                title="Upcoming Movies"
+                endpoint="movie/upcoming"
+            />
+            <HomeList
+                type="Series"
+                title="Upcoming Series"
+                endpoint="tv/on_the_air"
+            />
+
             <TrendingArtist />
-            <TopRatedMovie />
-            <TopRatedTV />
-            <PopularMovie />
-            <PopularTV />
+
             <PopularArtist />
         </div>
     );
