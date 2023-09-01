@@ -89,7 +89,7 @@ export default function FilterResults(props) {
         <div className="filter-results">
             <CardContainer
                 type={type}
-                title="Search Results"
+                title=""
                 cardList={results}
                 display="grid"
             />

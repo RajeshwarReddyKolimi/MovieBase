@@ -63,6 +63,8 @@ export default function Search() {
             );
             const data = await response.json();
             const results = await data.results;
+            if (results.length < 20) setShowMore(false);
+            else setShowMore(true);
             setSearchTV((prev) => [...prev, ...results]);
         } catch (err) {
             console.error(err);
@@ -76,6 +78,8 @@ export default function Search() {
             );
             const data = await response.json();
             const results = await data.results;
+            if (results.length < 20) setShowMore(false);
+            else setShowMore(true);
             setSearchPerson((prev) => [...prev, ...results]);
         } catch (err) {
             console.error(err);
@@ -157,21 +161,21 @@ export default function Search() {
                         (selected === "Movie" ? (
                             <CardContainer
                                 type="Movie"
-                                title="Movies"
+                                title=""
                                 cardList={searchMovie}
                                 display={"grid"}
                             />
                         ) : selected === "Series" ? (
                             <CardContainer
                                 type="Series"
-                                title="Series"
+                                title=""
                                 cardList={searchTV}
                                 display={"grid"}
                             />
                         ) : (
                             <CardContainer
                                 type="Person"
-                                title="Artists"
+                                title=""
                                 cardList={searchPerson}
                                 display={"grid"}
                             />

@@ -14,6 +14,15 @@
     gap: 0.5rem;
     padding: 0.5rem 1.5rem;
     margin: 0;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    background-color: #091214;
+}
+.sort {
+    top: 8rem;
 }
 .filters::-webkit-scrollbar {
     display: none;
@@ -70,16 +79,21 @@ select > option {
         padding: 0.5rem 0rem;
         transition: 0.5s;
     }
-    .text-input {
-        width: 180px;
-    }
+
     .filter-button {
+        cursor: pointer;
         display: block;
     }
 
     .show-filters {
-        width: 200px;
-        padding: 0.5rem 0.5rem 5.5rem;
+        width: 250px;
+        padding: 0.5rem 1rem 5.5rem;
         /* transform: scaleX(1); */
+    }
+    .show-filters .text-input {
+        width: 100%;
+    }
+    .sort {
+        top: 5rem;
     }
 }

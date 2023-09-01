@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Styles/filterOptions.css";
 import FilterResults from "./FilterResults";
 import env from "react-dotenv";
+import { FiFilter } from "react-icons/fi";
 export default function Filter(props) {
     const yearRef = useRef(null);
     const minRatingRef = useRef(null);
@@ -192,7 +193,7 @@ export default function Filter(props) {
                     className="filter-button"
                     onClick={() => setShowFilters((prev) => !prev)}
                 >
-                    Filters
+                    <FiFilter />
                 </div>
             </div>
             <FilterResults
