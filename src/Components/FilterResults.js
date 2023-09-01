@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Styles/filterResults.css";
 import env from "react-dotenv";
 import CardContainer from "./CardContainer";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { BsArrowUp } from "react-icons/bs";
 export default function FilterResults(props) {
     const {
         genre = 0,
@@ -18,6 +20,7 @@ export default function FilterResults(props) {
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
     const [results, setResults] = useState([]);
+    const [page, setPage] = useState(1);
     const options = {
         method: "GET",
         headers: {
@@ -27,13 +30,19 @@ export default function FilterResults(props) {
     };
     useEffect(() => {
         fetchResults();
+        setPage(1);
+        setResults([]);
     }, [props]);
+    useEffect(() => {
+        fetchResults();
+    }, [page]);
     async function fetchResults() {
         let url =
             type === "Movie"
                 ? `https://api.themoviedb.org/3/discover/movie?`
                 : `https://api.themoviedb.org/3/discover/tv?`;
-        url = url + `sort_by=${sort}&watch_region=IN&`;
+
+        url = url + `page=${page}&sort_by=${sort}&watch_region=IN&`;
         if (genre !== 0) {
             url = url + `with_genres=${genre}&`;
         }
@@ -60,11 +69,17 @@ export default function FilterResults(props) {
         if (max_rating !== 0) {
             url = url + `vote_average.lte=${max_rating}&`;
         }
+        const date = new Date();
+        const yyyy = date.getFullYear().toString().padStart(4, "0");
+        const mm = (date.getMonth() + 1).toString().padStart(2, "0");
+        const dd = date.getDate().toString().padStart(2, "0");
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        url = url + `primary_release_date.lte=${formattedDate}`;
         try {
             const response = await fetch(url, options);
             const data = await response.json();
             const results = await data.results;
-            setResults((prev) => [...results]);
+            setResults((prev) => [...prev, ...results]);
         } catch (err) {
             console.error(err);
         }
@@ -76,6 +91,17 @@ export default function FilterResults(props) {
                 type={type}
                 title="Search Results"
                 cardList={results}
+                display="grid"
+            />
+            <MdOutlineKeyboardDoubleArrowDown
+                className="load-button"
+                onClick={() => setPage((prev) => prev + 1)}
+            />
+            <BsArrowUp
+                className="go-top"
+                onClick={() => {
+                    window.scrollTo(0, 0);
+                }}
             />
         </div>
     );

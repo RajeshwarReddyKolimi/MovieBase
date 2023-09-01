@@ -68,7 +68,6 @@ export default function MoviePopup(props) {
         if (type === "Movie")
             url = `https://api.themoviedb.org/3/movie/${details.id}/similar`;
         else url = `https://api.themoviedb.org/3/tv/${details.id}/similar`;
-
         try {
             const response = await fetch(url, options);
             const data = await response.json();
@@ -104,6 +103,7 @@ export default function MoviePopup(props) {
             setEpisodes(data.number_of_episodes);
             setYear(() => {
                 if (
+                    data.first_air_date &&
                     data.last_air_date &&
                     data.first_air_date.substring(0, 4) !==
                         data.last_air_date.substring(0, 4)
@@ -113,7 +113,8 @@ export default function MoviePopup(props) {
                         "-" +
                         data.last_air_date.substring(0, 4)
                     );
-                return data.first_air_date.substring(0, 4);
+                if (data.first_air_date)
+                    return data.first_air_date.substring(0, 4);
             });
         } catch (err) {
             console.error(err);
@@ -127,7 +128,7 @@ export default function MoviePopup(props) {
             );
             const data = await response.json();
             setTitle(data.title);
-            setYear(data.release_date.substring(0, 4));
+            if (data.release_date) setYear(data.release_date.substring(0, 4));
             setRuntime(data.runtime);
         } catch (err) {
             console.error(err);

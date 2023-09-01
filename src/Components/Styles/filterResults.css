@@ -1,2 +1,30 @@
 .filter-results {
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.load-button {
+    width: 100vw;
+    cursor: pointer;
+    margin: 1rem auto;
+    font-size: 24px;
+}
+.load-button:hover {
+    font-size: 28px;
+}
+.go-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    font-size: 32px;
+    background-color: rgba(0, 0, 0, 0.267);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: 0.1s;
+    z-index: 50;
+}
+.go-top:hover {
+    transform: scale(1.1);
 }

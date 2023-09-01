@@ -1,3 +1,34 @@
+.search-page {
+    width: 100vw;
+    padding: 0;
+}
+.search-header {
+    height: 5rem;
+    margin: 0;
+    position: fixed;
+    z-index: 10;
+    top: 0%;
+    left: 0%;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    background-color: #191919;
+}
+.app-title {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 900;
+}
+.app-title > span {
+    color: rgb(0, 132, 255);
+}
 .search {
     background-color: rgba(255, 255, 255, 0.02);
     display: flex;
@@ -5,8 +36,8 @@
     border-radius: 0.4rem;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 90vw;
 }
 .search-icon {
     color: white;
@@ -14,36 +45,23 @@
     height: 30px;
     font-size: 24px;
     padding: 0.2rem;
-    /* background-color: rgba(255, 255, 255, 0.1); */
 }
 .form-input {
-    width: 300px;
-    padding: 0.8rem;
+    width: 500px;
+    padding: 1rem;
     background-color: transparent;
     outline: none;
     color: white;
 }
 .search-div {
-    position: absolute;
-    overflow: auto;
-    top: 5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80vw;
-    /* height: calc(100vh-5rem); */
+    width: 100vw;
+    margin-top: 5rem;
     color: white;
     background-color: rgb(15, 31, 36);
     padding: 1rem;
-    z-index: 5;
 }
 .search-container {
     width: 100%;
-    height: 90vh;
-    overflow: auto;
-    /* margin-bottom: 2rem; */
-}
-.search-container::-webkit-scrollbar{
-    display: none;
 }
 .search-result {
     display: flex;
@@ -53,9 +71,36 @@
     align-items: stretch;
     gap: 2rem;
 }
-
-@media screen and (max-width:1024px){
-    .form-input{
-        display: none;
+.search-options {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.search-option {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    color: white;
+}
+.search-selected {
+    border-bottom: 2px solid white;
+}
+@media screen and (max-width: 768px) {
+    .app-title {
+        font-size: 1.5rem;
+    }
+}
+@media screen and (max-width: 425px) {
+    .search-header {
+        /* align-items: start; */
+        flex-direction: column;
+        justify-content: center;
+        height: 8rem;
+    }
+    .search-div {
+        margin-top: 8rem;
+        padding: 0rem;
+    }
+    .search-container {
+        padding: 0rem;
     }
 }

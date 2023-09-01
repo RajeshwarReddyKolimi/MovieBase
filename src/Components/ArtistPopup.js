@@ -93,18 +93,20 @@ export default function ArtistPopup(props) {
                     />
                 </div>
                 <div className="artist-details">
-                    <h2 style={{ textAlign: "center" }}>
-                        {details.name}
-                    </h2>
+                    <h2 style={{ textAlign: "center" }}>{details.name}</h2>
                     <h3 style={{ textAlign: "center" }}>
                         {details.known_for_department}
                     </h3>
-                    <div>
-                        <b>Date of Birth:</b> {bio.birthday}
-                    </div>
-                    <div>
-                        <b>Place of Birth:</b> {bio.birthplace}
-                    </div>
+                    {bio.birthday && (
+                        <div>
+                            <b>Date of Birth:</b> {bio.birthday}
+                        </div>
+                    )}
+                    {bio.birthplace && (
+                        <div>
+                            <b>Place of Birth:</b> {bio.birthplace}
+                        </div>
+                    )}
                     <div>{bio.biography}</div>
                 </div>
             </div>

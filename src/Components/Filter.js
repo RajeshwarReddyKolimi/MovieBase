@@ -13,6 +13,7 @@ export default function Filter(props) {
     const streamerRef = useRef(null);
     const sortRef = useRef(null);
 
+    const [showFilters, setShowFilters] = useState(false);
     const [year, setYear] = useState(0);
     const [minRating, setMinRating] = useState(0);
     const [maxRating, setMaxRating] = useState(0);
@@ -77,94 +78,105 @@ export default function Filter(props) {
 
     return (
         <div className="filter-options">
-            <form onSubmit={handleSubmit}>
-                <h4>Filter</h4>
-
-                <input
-                    onChange={handleSubmit}
-                    ref={yearRef}
-                    className="text-input"
-                    type="number"
-                    placeholder="year"
-                    min={1800}
-                    max={2050}
-                />
-                <input
-                    onChange={handleSubmit}
-                    ref={minRatingRef}
-                    className="text-input"
-                    type="number"
-                    placeholder="Rating from"
-                    min={0}
-                    max={10}
-                />
-                <input
-                    onChange={handleSubmit}
-                    ref={maxRatingRef}
-                    className="text-input"
-                    type="number"
-                    placeholder="Rating to"
-                    max={10}
-                    min={0}
-                />
-                <input
-                    onChange={handleSubmit}
-                    ref={minRuntimeRef}
-                    className="text-input"
-                    type="number"
-                    placeholder="Runtime from"
-                    min={0}
-                />
-                <input
-                    onChange={handleSubmit}
-                    ref={maxRuntimeRef}
-                    className="text-input"
-                    type="number"
-                    placeholder="Runtime to"
-                    min={0}
-                />
-                <select
-                    onChange={handleSubmit}
-                    className="text-input"
-                    ref={genreRef}
-                    id="genresList"
-                    name="genresList"
-                >
-                    <option value="">Genre</option>
-                    {genreList.map((genre, key) => (
-                        <option key={key} value={genre.id}>
-                            {genre.name}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    onChange={handleSubmit}
-                    className="text-input"
-                    ref={languageRef}
-                    id="langs"
-                    name="langs"
-                >
-                    <option value="">Language</option>
-                    {languagesList.map((lang, key) => (
-                        <option key={key} value={lang.iso_639_1}>
-                            {lang.english_name}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    onChange={handleSubmit}
-                    className="text-input"
-                    ref={streamerRef}
-                    id="streamers"
-                    name="streamers"
-                >
-                    <option value="">Streamer</option>
-                    {streamersList.map((streamer, key) => (
-                        <option key={key} value={streamer.provider_id}>
-                            {streamer.provider_name}
-                        </option>
-                    ))}
-                </select>
+            <div style={{ marginTop: "5rem" }}></div>
+            <div
+                className={`${showFilters && "filter-overlay"}`}
+                onClick={(e) => {
+                    if (e.target.className !== "filter-overlay") return;
+                    setShowFilters(false);
+                }}
+            >
+                <div className={`filters ${showFilters && "show-filters"}`}>
+                    <h4>Filters</h4>
+                    <input
+                        onChange={handleSubmit}
+                        ref={yearRef}
+                        className="text-input"
+                        type="number"
+                        placeholder="year"
+                        min={1800}
+                        max={2050}
+                    />
+                    <input
+                        onChange={handleSubmit}
+                        ref={minRatingRef}
+                        className="text-input"
+                        type="number"
+                        placeholder="Rating from"
+                        min={0}
+                        max={10}
+                    />
+                    <input
+                        onChange={handleSubmit}
+                        ref={maxRatingRef}
+                        className="text-input"
+                        type="number"
+                        placeholder="Rating to"
+                        max={10}
+                        min={0}
+                    />
+                    <input
+                        onChange={handleSubmit}
+                        ref={minRuntimeRef}
+                        className="text-input"
+                        type="number"
+                        placeholder="Runtime from"
+                        min={0}
+                    />
+                    <input
+                        onChange={handleSubmit}
+                        ref={maxRuntimeRef}
+                        className="text-input"
+                        type="number"
+                        placeholder="Runtime to"
+                        min={0}
+                    />
+                    <select
+                        onChange={handleSubmit}
+                        className="text-input"
+                        ref={genreRef}
+                        id="genresList"
+                        name="genresList"
+                    >
+                        <option value="">Genre</option>
+                        {genreList.map((genre, key) => (
+                            <option key={key} value={genre.id}>
+                                {genre.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        onChange={handleSubmit}
+                        className="text-input"
+                        ref={languageRef}
+                        id="langs"
+                        name="langs"
+                    >
+                        <option value="">Language</option>
+                        {languagesList.map((lang, key) => (
+                            <option key={key} value={lang.iso_639_1}>
+                                {lang.english_name}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        onChange={handleSubmit}
+                        className="text-input"
+                        ref={streamerRef}
+                        id="streamers"
+                        name="streamers"
+                    >
+                        <option value="">Streamer</option>
+                        {streamersList.map((streamer, key) => (
+                            <option key={key} value={streamer.provider_id}>
+                                {streamer.provider_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <div className="sort">
+                <h4>Sort by</h4>
                 <select
                     onChange={handleSubmit}
                     className="text-input"
@@ -176,7 +188,13 @@ export default function Filter(props) {
                     <option value="vote_average.desc">Rating</option>
                     <option value="primary_release_date.desc">Year</option>
                 </select>
-            </form>
+                <div
+                    className="filter-button"
+                    onClick={() => setShowFilters((prev) => !prev)}
+                >
+                    Filters
+                </div>
+            </div>
             <FilterResults
                 release_year={year}
                 min_time={minRuntime}

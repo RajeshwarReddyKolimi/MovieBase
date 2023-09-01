@@ -94,9 +94,6 @@
         transform: scale(1);
         background-color: rgb(16, 30, 32);
     }
-    .app-title {
-        font-size: 2rem;
-    }
 }
 @media screen and (max-width: 375px) {
     .app-title {

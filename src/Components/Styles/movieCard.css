@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    /* align-items: stretch; */
     gap: 2rem;
     color: white;
     transition: transform 1s;
@@ -18,39 +17,47 @@
     overflow-y: overflow;
     padding: 0.5rem 0rem;
 }
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    gap: 2rem;
+    place-items: center;
+    place-content: space-around;
+}
 .card-slider::-webkit-scrollbar {
     display: none;
 }
 .card {
+    width: 200px;
     cursor: pointer;
     text-overflow: clip;
-    padding: 0.5rem;
     transition: 0.4s;
+    position: relative;
 }
 .card:hover {
-    /* border: 1px solid white; */
     transform: scale(1.05);
 }
 .movie-poster {
     width: 200px;
-    /* aspect-ratio: auto 3/4; */
     aspect-ratio: 6/9;
 }
-.movie-info {
+.card-rating,
+.card-year {
+    font-size: 0.8rem;
+    position: absolute;
+    top: 0%;
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
+    padding: 0.2rem 0.5rem;
 }
-.rating {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.card-rating {
+    left: 0;
 }
-.movie-title {
-    text-align: left;
-    padding: 0.5rem;
+.card-year {
+    right: 0;
 }
 .artist-card {
     padding: 0rem 1rem;
@@ -68,17 +75,31 @@
         font-size: 1.5rem;
     }
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 512px) {
     .card-container {
         padding: 0rem 0.5rem;
     }
     .artist-image {
         width: 140px;
     }
-    .card-slider {
-        gap: 1rem;
+    .card-slider .card {
+        width: 150px;
     }
-    .movie-poster {
-        width: 180px;
+    .card-grid {
+        gap: 1rem;
+        grid-template-columns: repeat(2, 50%);
+        place-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    .card-grid .card {
+        width: 100%;
+    }
+    .card-slider .movie-poster {
+        width: 150px;
+        aspect-ratio: 6/9;
+    }
+    .card-grid .movie-poster {
+        width: 100%;
     }
 }

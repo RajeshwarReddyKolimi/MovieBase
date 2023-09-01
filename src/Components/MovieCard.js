@@ -11,10 +11,12 @@ export default function MovieCard(props) {
     const [title, setTitle] = useState("");
     useEffect(() => {
         if (type === "Movie") {
-            setYear(details.release_date.substring(0, 4));
+            if (details.release_date)
+                setYear(details.release_date.substring(0, 4));
             setTitle(details.title);
         } else {
-            setYear(details.first_air_date.substring(0, 4));
+            if (details.first_air_date)
+                setYear(details.first_air_date.substring(0, 4));
             setTitle(details.name);
         }
     }, []);
@@ -34,6 +36,11 @@ export default function MovieCard(props) {
                 }`}
                 alt={`${title}`}
             />
+            <h4 className="card-rating">
+                {details.vote_average.toFixed(1)}
+                <AiFillStar style={{ color: "rgb(226, 176, 49)" }} />
+            </h4>
+            {year && <h4 className="card-year">{year}</h4>}
         </Link>
     );
 }
