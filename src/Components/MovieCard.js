@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 export default function MovieCard(props) {
     const { details, type } = props;
-    const [showPopup, setShowPopup] = useState(false);
     const [year, setYear] = useState("");
     const [title, setTitle] = useState("");
     useEffect(() => {
@@ -22,8 +21,9 @@ export default function MovieCard(props) {
     }, []);
     return (
         <Link
-            to={`/info`}
-            state={{ type: type, details: details }}
+            to={`/info?type=${type}&details=${JSON.stringify(details)}`}
+            as="/info"
+            // state={{ type: type, details: details }}
             className="card"
         >
             <img
@@ -37,7 +37,7 @@ export default function MovieCard(props) {
                 alt={`${title}`}
             />
             <h4 className="card-rating">
-                {details.vote_average.toFixed(1)}
+                {details.vote_average && details.vote_average.toFixed(1)}
                 <AiFillStar style={{ color: "rgb(226, 176, 49)" }} />
             </h4>
             {year && <h4 className="card-year">{year}</h4>}

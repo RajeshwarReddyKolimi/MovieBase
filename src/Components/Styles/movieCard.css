@@ -16,6 +16,10 @@
     overflow-x: auto;
     overflow-y: overflow;
     padding: 0.5rem 0rem;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 .card-grid {
     display: grid;

@@ -7,8 +7,7 @@ export default function PersonCard(props) {
     const { details } = props;
     return (
         <Link
-            to="/info"
-            state={{ type: "Artist", details: details }}
+            to={`/artist?details=${JSON.stringify(details)}`}
             className="artist-card card"
         >
             <img

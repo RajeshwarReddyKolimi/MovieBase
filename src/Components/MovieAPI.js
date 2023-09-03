@@ -3,11 +3,13 @@ import Header from "./Header";
 import TrendingArtist from "./TrendingArtist";
 import PopularArtist from "./PopularArtist";
 import HomeList from "./HomeList";
+import Slider from "./Slider";
 export default function MovieAPI() {
     return (
         <div>
-            <Header />
-            <div style={{ marginTop: "5rem" }}></div>
+            <Header selected="Home" />
+            <div style={{ height: "5rem" }}></div>
+            <Slider />
             <HomeList
                 type="Movie"
                 title="Trending Movies"

@@ -57,6 +57,20 @@ export default function Filter(props) {
             );
             const data = await response.json();
             const results = data.results || data.genres || data;
+            if (results && results[0] && results[0].english_name) {
+                results.sort((a, b) =>
+                    a.english_name.localeCompare(b.english_name)
+                );
+            }
+            if (results && results[0] && results[0].provider_name) {
+
+                results.sort((a, b) =>
+                    a.provider_name.localeCompare(b.provider_name)
+                );
+            }
+            // results.sort((a, b) =>
+            //     b.provider_name.localeCompare(a.provider_name)
+            // );
 
             setter((prev) => [...results]);
         } catch (err) {

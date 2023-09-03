@@ -4,9 +4,15 @@ import { MdClose } from "react-icons/md";
 import env from "react-dotenv";
 import { AiFillStar } from "react-icons/ai";
 import CardContainer from "./CardContainer";
+import { useSearchParams } from "react-router-dom";
 export default function MoviePopup(props) {
-    const { details, type } = props;
-    const [streamer, setStreamer] = useState([]);
+    const [params, setParams] = useSearchParams();
+    const details = JSON.parse(params.get("details"));
+    const type = params.get("type");
+    // const { details, type } = props;
+    const [streamer, setStreamer] = useState({});
+    const [director, setDirector] = useState([]);
+    const [genreList, setGenreList] = useState([]);
     const [similar, setSimilar] = useState([]);
     const [cast, setCast] = useState([]);
     const [year, setYear] = useState("");
@@ -26,7 +32,7 @@ export default function MoviePopup(props) {
         },
     };
     useEffect(() => {
-        window.scrollTo(0, 0);
+        if (!details) return;
         setOpened(true);
         if (type === "Movie") {
             setYear(details.release_date.substring(0, 4));
@@ -49,16 +55,44 @@ export default function MoviePopup(props) {
             const response = await fetch(url, options);
             const data = await response.json();
             const result = await data.results.IN;
+            // setStreamer({});
             if (!result) return;
-            if (!result.flatrate) return;
-            const set = new Set();
-
-            result.flatrate.forEach((provider) => {
-                const logo = provider.logo_path;
-                const name = provider.provider_name;
-                set.add({ logo, name });
-            });
-            setStreamer(Array.from(set));
+            if (result.flatrate) {
+                const set1 = new Set();
+                result.flatrate.forEach((provider) => {
+                    const logo = provider.logo_path;
+                    const name = provider.provider_name;
+                    set1.add({ logo, name });
+                });
+                setStreamer((prev) => ({ ...prev, free: Array.from(set1) }));
+            }
+            if (result.rent) {
+                const set2 = new Set();
+                result.rent.forEach((provider) => {
+                    const logo = provider.logo_path;
+                    const name = provider.provider_name;
+                    set2.add({ logo, name });
+                });
+                setStreamer((prev) => ({ ...prev, rent: Array.from(set2) }));
+            }
+            if (result.buy) {
+                const set3 = new Set();
+                result.buy.forEach((provider) => {
+                    const logo = provider.logo_path;
+                    const name = provider.provider_name;
+                    set3.add({ logo, name });
+                });
+                setStreamer((prev) => ({ ...prev, buy: Array.from(set3) }));
+            }
+            if (result.ads) {
+                const set4 = new Set();
+                result.ads.forEach((provider) => {
+                    const logo = provider.logo_path;
+                    const name = provider.provider_name;
+                    set4.add({ logo, name });
+                });
+                setStreamer((prev) => ({ ...prev, ads: Array.from(set4) }));
+            }
         } catch (err) {
             console.error(err);
         }
@@ -98,9 +132,11 @@ export default function MoviePopup(props) {
                 options
             );
             const data = await response.json();
+            setDirector([...data.created_by]);
             setTitle(data.name);
             setSeasons(data.number_of_seasons);
             setEpisodes(data.number_of_episodes);
+            setGenreList([...data.genres]);
             setYear(() => {
                 if (
                     data.first_air_date &&
@@ -130,6 +166,8 @@ export default function MoviePopup(props) {
             setTitle(data.title);
             if (data.release_date) setYear(data.release_date.substring(0, 4));
             setRuntime(data.runtime);
+            setGenreList([...data.genres]);
+            setDirector([...data.created_by]);
         } catch (err) {
             console.error(err);
         }
@@ -140,7 +178,7 @@ export default function MoviePopup(props) {
                 <img
                     className="movie-image"
                     src={`${
-                        details.backdrop_path !== null
+                        details && details.backdrop_path !== null
                             ? `https://image.tmdb.org/t/p/original${details.backdrop_path}`
                             : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
                     }`}
@@ -153,7 +191,9 @@ export default function MoviePopup(props) {
                         <div className="movie-header">
                             <h4 className="movie-year">{year}</h4>
                             <h4 className="movie-rating">
-                                {details.vote_average.toFixed(1)}
+                                {details &&
+                                    details.vote_average &&
+                                    details.vote_average.toFixed(1)}
                                 <AiFillStar
                                     style={{ color: "rgb(226, 176, 49)" }}
                                 />
@@ -162,26 +202,86 @@ export default function MoviePopup(props) {
                             {type === "Series" && <h4>Seasons: {seasons}</h4>}
                             {type === "Series" && <h4>Episodes: {episodes}</h4>}
                         </div>
-                        <div className="movie-overview">{details.overview}</div>
+                        {genreList && (
+                            <div className="genre-list">
+                                <h4>Genre: </h4>
+                                {genreList.map((genre, key) => (
+                                    <h4 key={key}>{genre.name}</h4>
+                                ))}
+                            </div>
+                        )}
+                        <div className="movie-overview">
+                            {details !== undefined && details.overview}
+                        </div>
                     </div>
                 </div>
             </div>
             <div className="stream-list">
-                <div className="stream-header">Where to watch:</div>
-                {streamer.length === 0 ? (
-                    <div className="stream-name">NA</div>
-                ) : (
-                    streamer.map((stream, key) => (
-                        <img
-                            className="stream-img"
-                            key={key}
-                            src={`https://image.tmdb.org/t/p/original${stream.logo}`}
-                            alt="Logo"
-                            title={stream.name}
-                        />
-                    ))
+                <h2 className="stream-header">Watch Options:</h2>
+                {streamer.ads && (
+                    <div className="stream-type">
+                        <h3>Free</h3>
+                        {streamer.ads.map((stream, key) => (
+                            <td>
+                                <img
+                                    className="stream-img"
+                                    key={key}
+                                    src={`https://image.tmdb.org/t/p/original${stream.logo}`}
+                                    alt="Logo"
+                                    title={stream.name}
+                                />
+                            </td>
+                        ))}
+                    </div>
+                )}
+                {streamer.free && (
+                    <div className="stream-type">
+                        <h3>Subs</h3>
+                        {streamer.free.map((stream, key) => (
+                            <img
+                                className="stream-img"
+                                key={key}
+                                src={`https://image.tmdb.org/t/p/original${stream.logo}`}
+                                alt="Logo"
+                                title={stream.name}
+                            />
+                        ))}
+                    </div>
+                )}
+                {streamer.rent && (
+                    <div className="stream-type">
+                        <h3>Rent</h3>
+                        {streamer.rent.map((stream, key) => (
+                            <img
+                                className="stream-img"
+                                key={key}
+                                src={`https://image.tmdb.org/t/p/original${stream.logo}`}
+                                alt="Logo"
+                                title={stream.name}
+                            />
+                        ))}
+                    </div>
+                )}
+                {streamer.buy && (
+                    <div className="stream-type">
+                        <h3>Buy</h3>
+                        {streamer.buy.map((stream, key) => (
+                            <img
+                                className="stream-img"
+                                key={key}
+                                src={`https://image.tmdb.org/t/p/original${stream.logo}`}
+                                alt="Logo"
+                                title={stream.name}
+                            />
+                        ))}
+                    </div>
                 )}
             </div>
+            <CardContainer
+                type="Artist"
+                title="Created By"
+                cardList={director}
+            />
             <CardContainer
                 type="Artist"
                 title="Cast and Crew"

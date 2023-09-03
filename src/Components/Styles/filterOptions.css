@@ -21,6 +21,11 @@
     z-index: 5;
     background-color: #091214;
 }
+.filters {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+    overflow: -moz-scrollbars-none; 
+}
 .sort {
     top: 8rem;
 }

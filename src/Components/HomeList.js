@@ -19,7 +19,7 @@ export default function HomeList(props) {
     async function getList() {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/${endpoint}`,
+                `https://api.themoviedb.org/3/${endpoint}?region=IN&watch_region=IN`,
                 options
             );
             const data = await response.json();

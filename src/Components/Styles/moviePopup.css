@@ -64,16 +64,30 @@
     justify-content: center;
     align-items: center;
 }
+.genre-list {
+    display: flex;
+    gap: 1.5rem;
+}
 .movie-overview {
     font-weight: 400;
 }
 .stream-list {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1rem;
     justify-content: flex-start;
-    align-items: center;
+    align-items: start;
     padding: 1rem 2rem;
+}
+.stream-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+.stream-type > h3 {
+    width: 50px;
 }
 .stream-header {
     font-weight: 400;
@@ -81,7 +95,8 @@
 .stream-img {
     width: 50px;
     height: 50px;
-    border-radius: 2px;
+    border-radius: 0.8rem;
+    /* background-color:black; */
 }
 .similar-movies {
     margin: auto;
@@ -110,6 +125,10 @@
     gap: 1rem;
     height: 100vh;
     overflow-y: auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 .artist-details::-webkit-scrollbar {
     display: none;
@@ -122,7 +141,7 @@
         background-color: transparent;
         padding: 0.5rem 2rem;
     }
-    .movie-image{
+    .movie-image {
         height: auto;
     }
     .artist-popup-image {
@@ -138,7 +157,6 @@
         height: auto;
         padding: 1rem 2rem;
     }
-    
 }
 @media screen and (max-width: 425px) {
     .movie-details {
@@ -151,7 +169,7 @@
         width: 70vw;
         height: auto;
     }
-    .artist-details{
+    .artist-details {
         padding: 1rem;
     }
 }

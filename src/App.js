@@ -6,6 +6,7 @@ import {
     Routes,
     Route,
     useLocation,
+    useSearchParams,
 } from "react-router-dom";
 import Discover from "./Components/Discover";
 import MoviePopup from "./Components/MoviePopup";
@@ -19,7 +20,8 @@ function App() {
                 <Route path="/" exact element={<MovieAPI />} />
                 <Route path="/movies" element={<Discover type="Movie" />} />
                 <Route path="/series" element={<Discover type="Series" />} />
-                <Route path="/info" element={<MoviePopupWithState />} />
+                <Route path="/info" element={<MoviePopup />} />
+                <Route path="/artist" element={<ArtistPopup />} />
                 <Route path="/search" element={<Search />} />
             </Routes>
         </Router>
@@ -27,12 +29,14 @@ function App() {
 }
 
 const MoviePopupWithState = () => {
-    const location = useLocation();
-    const state = location.state;
-    const type = state.type;
-    const details = state.details;
-    if (type === "Artist") return <ArtistPopup details={details} />;
-    return <MoviePopup type={type} details={details} />;
+    const [params, setParams] = useSearchParams();
+    const type = params.get("type");
+    let details = {};
+    const detailsParam = params.get("details");
+    if (detailsParam) {
+        details = JSON.parse(detailsParam);
+    }
+    if (type === "Movie" || type === "Series") return <MoviePopup />;
 };
 
 export default App;

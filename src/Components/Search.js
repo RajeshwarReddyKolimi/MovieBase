@@ -3,19 +3,27 @@ import "./Styles/search.css";
 import { CgSearch } from "react-icons/cg";
 import env from "react-dotenv";
 import CardContainer from "./CardContainer";
-import { Link } from "react-router-dom";
+import {
+    Link,
+    Navigate,
+    useHistory,
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
 import "./Styles/filterResults.css";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import { BsArrowUp } from "react-icons/bs";
 export default function Search() {
+    const navigate = useNavigate();
+    const [params, setParams] = useSearchParams();
+    const [query, setQuery] = useState(params.get("query"));
     const currentRef = useRef(null);
-    const [query, setQuery] = useState("");
-    const [searchMovie, setSearchMovie] = useState([]);
+    const [search, setSearch] = useState([]);
     const [searchTV, setSearchTV] = useState([]);
     const [searchPerson, setSearchPerson] = useState([]);
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
-    const [selected, setSelected] = useState("Movie");
+    const [selected, setSelected] = useState("movie");
     const [page, setPage] = useState(1);
     const [showMore, setShowMore] = useState(false);
     const options = {
@@ -27,64 +35,40 @@ export default function Search() {
     };
     useEffect(() => {
         setPage(1);
-        setSearchMovie([]);
-        setSearchPerson([]);
-        setSearchTV([]);
+        setSearch([]);
         fetchData();
-    }, [query]);
+    }, [selected]);
     useEffect(() => {
         fetchData();
-    }, [page, selected]);
-    function fetchData() {
-        fetchMovies();
-        fetchSeries();
-        fetchArtist();
+    }, [page]);
+    function handleSearch(e) {
+        e.preventDefault();
+        setQuery(currentRef.current.value);
+        if (currentRef.current) {
+            currentRef.current.blur();
+        }
+        setPage(1);
+        setSearch([]);
+        fetchData();
+        navigate(`/search?query=${query}`);
     }
-    async function fetchMovies() {
+    async function fetchData() {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}`,
+                `https://api.themoviedb.org/3/search/${selected}?query=${query}&page=${page}`,
                 options
             );
+            console.log(selected);
             const data = await response.json();
             const results = await data.results;
             if (results.length < 20) setShowMore(false);
             else setShowMore(true);
-            setSearchMovie((prev) => [...prev, ...results]);
+            setSearch((prev) => [...prev, ...results]);
         } catch (err) {
             console.error(err);
         }
     }
-    async function fetchSeries() {
-        try {
-            const response = await fetch(
-                `https://api.themoviedb.org/3/search/tv?query=${query}&page=${page}`,
-                options
-            );
-            const data = await response.json();
-            const results = await data.results;
-            if (results.length < 20) setShowMore(false);
-            else setShowMore(true);
-            setSearchTV((prev) => [...prev, ...results]);
-        } catch (err) {
-            console.error(err);
-        }
-    }
-    async function fetchArtist() {
-        try {
-            const response = await fetch(
-                `https://api.themoviedb.org/3/search/person?query=${query}&page=${page}`,
-                options
-            );
-            const data = await response.json();
-            const results = await data.results;
-            if (results.length < 20) setShowMore(false);
-            else setShowMore(true);
-            setSearchPerson((prev) => [...prev, ...results]);
-        } catch (err) {
-            console.error(err);
-        }
-    }
+
     return (
         <div className="search-page">
             <div className="search-header">
@@ -94,11 +78,11 @@ export default function Search() {
                 <form
                     className="search"
                     onSubmit={(e) => {
-                        e.preventDefault();
-                        setQuery(currentRef.current.value);
+                        handleSearch(e);
                     }}
                 >
                     <input
+                        defaultValue={query}
                         type="text"
                         id="search-input"
                         className="form-input"
@@ -112,8 +96,7 @@ export default function Search() {
                         <CgSearch
                             className="search-icon"
                             onClick={(e) => {
-                                setQuery(currentRef.current.value);
-                                e.preventDefault();
+                                handleSearch(e);
                             }}
                         />
                     </button>
@@ -123,33 +106,30 @@ export default function Search() {
                 <div className="search-options">
                     <button
                         className={`search-option ${
-                            selected === "Movie" && "search-selected"
+                            selected === "movie" && "search-selected"
                         } `}
                         onClick={() => {
-                            setSelected("Movie");
-                            fetchMovies();
+                            setSelected("movie");
                         }}
                     >
                         Movies
                     </button>
                     <button
                         className={`search-option ${
-                            selected === "Series" && "search-selected"
+                            selected === "tv" && "search-selected"
                         } `}
                         onClick={() => {
-                            setSelected("Series");
-                            fetchSeries();
+                            setSelected("tv");
                         }}
                     >
                         Series
                     </button>
                     <button
                         className={`search-option ${
-                            selected === "Artist" && "search-selected"
+                            selected === "person" && "search-selected"
                         } `}
                         onClick={() => {
-                            setSelected("Artist");
-                            fetchArtist();
+                            setSelected("person");
                         }}
                     >
                         Artists
@@ -158,25 +138,25 @@ export default function Search() {
                 <div className="search-container">
                     {query &&
                         query !== "" &&
-                        (selected === "Movie" ? (
+                        (selected === "movie" ? (
                             <CardContainer
                                 type="Movie"
                                 title=""
-                                cardList={searchMovie}
+                                cardList={search}
                                 display={"grid"}
                             />
-                        ) : selected === "Series" ? (
+                        ) : selected === "tv" ? (
                             <CardContainer
                                 type="Series"
                                 title=""
-                                cardList={searchTV}
+                                cardList={search}
                                 display={"grid"}
                             />
                         ) : (
                             <CardContainer
-                                type="Person"
+                                type="person"
                                 title=""
-                                cardList={searchPerson}
+                                cardList={search}
                                 display={"grid"}
                             />
                         ))}

@@ -5,7 +5,7 @@ import "./Styles/discover.css";
 export default function Discover(props) {
     return (
         <div>
-            <Header />
+            <Header selected={props.type} />
             <Filter type={props.type} />
         </div>
     );

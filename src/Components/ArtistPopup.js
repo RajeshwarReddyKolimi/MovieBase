@@ -4,9 +4,14 @@ import CardContainer from "./CardContainer";
 import { MdClose } from "react-icons/md";
 import "./Styles/moviePopup.css";
 import env from "react-dotenv";
+import { useSearchParams } from "react-router-dom";
 export default function ArtistPopup(props) {
-    const { details } = props;
+    const [params, setParams] = useSearchParams();
+    const details = JSON.parse(params.get("details"));
+    console.log(details);
+    // const { details } = props;
     const [movieList, setMovieList] = useState([]);
+    const [TVList, setTVList] = useState([]);
     const [bio, setBio] = useState({});
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
@@ -20,8 +25,10 @@ export default function ArtistPopup(props) {
     useEffect(() => {
         getMovieList();
         getDetails();
+        getTVList();
     }, [details]);
     async function getDetails() {
+        if (!details) return;
         try {
             const response = await fetch(
                 `https://api.themoviedb.org/3/person/${details.id}`,
@@ -64,6 +71,7 @@ export default function ArtistPopup(props) {
         return formattedDate;
     }
     async function getMovieList() {
+        if (!details) return;
         try {
             const response = await fetch(
                 `https://api.themoviedb.org/3/person/${details.id}/movie_credits`,
@@ -72,8 +80,24 @@ export default function ArtistPopup(props) {
             const data = await response.json();
             let result = await data.cast;
             result = [...new Set(result)];
-            result.sort((a, b) => b.vote_average - a.vote_average);
+            // result.sort((a, b) => b.vote_average - a.vote_average);
             setMovieList(result);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    async function getTVList() {
+        if (!details) return;
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/person/${details.id}/tv_credits`,
+                options
+            );
+            const data = await response.json();
+            let result = await data.cast;
+            result = [...new Set(result)];
+            // result.sort((a, b) => b.vote_average - a.vote_average);
+            setTVList(result);
         } catch (err) {
             console.error(err);
         }
@@ -84,7 +108,7 @@ export default function ArtistPopup(props) {
                 <div>
                     <img
                         src={`${
-                            details.profile_path
+                            details && details.profile_path
                                 ? `https://image.tmdb.org/t/p/w500${details.profile_path}`
                                 : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
                         }`}
@@ -93,9 +117,11 @@ export default function ArtistPopup(props) {
                     />
                 </div>
                 <div className="artist-details">
-                    <h2 style={{ textAlign: "center" }}>{details.name}</h2>
+                    <h2 style={{ textAlign: "center" }}>
+                        {details && details.name}
+                    </h2>
                     <h3 style={{ textAlign: "center" }}>
-                        {details.known_for_department}
+                        {details && details.known_for_department}
                     </h3>
                     {bio.birthday && (
                         <div>
@@ -114,6 +140,11 @@ export default function ArtistPopup(props) {
                 type="Movie"
                 title="Famous Movies"
                 cardList={movieList}
+            />
+            <CardContainer
+                type="Series"
+                title="Famous Series"
+                cardList={TVList}
             />
         </div>
     );

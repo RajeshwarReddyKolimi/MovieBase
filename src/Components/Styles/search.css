@@ -15,7 +15,7 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.5rem 1.5rem 0.5rem 1rem;
-    background-color: #191919;
+    background-color: #091214;
 }
 .app-title {
     color: white;
@@ -80,7 +80,9 @@
     width: 100%;
     gap: 1rem;
     z-index: 20;
-    background-color: #191919;
+    background-color: #091214;
+    padding: 0rem 1rem;
+    border-bottom: 1px solid rgb(255, 255, 255,0.02);
 }
 .search-option {
     padding: 1rem;

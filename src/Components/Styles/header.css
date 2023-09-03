@@ -33,6 +33,9 @@
 .list-items > a:hover {
     transform: scale(1.05);
 }
+.nav-selected {
+    border-bottom: 2px solid white;
+}
 .flex-buffer {
     flex-grow: 1;
 }
@@ -47,11 +50,13 @@
 .app-title > span {
     color: rgb(0, 132, 255);
 }
+.nav-menu-container{
+    display: none;
+}
 .nav-menu {
     width: 40px;
     height: 40px;
     color: white;
-    display: none;
     cursor: pointer;
 }
 
@@ -79,7 +84,7 @@
         text-align: center;
         width: 100%;
     }
-    .nav-menu {
+    .nav-menu-container{
         display: block;
     }
     .show-items {
@@ -93,6 +98,9 @@
     .show-items > a:hover {
         transform: scale(1);
         background-color: rgb(16, 30, 32);
+    }
+    .nav-selected {
+        border-bottom: none;
     }
 }
 @media screen and (max-width: 375px) {
