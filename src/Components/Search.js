@@ -90,6 +90,7 @@ export default function Search() {
                         onChange={(e) => {
                             setQuery(currentRef.current.value);
                         }}
+                        autoFocus
                     />
                     <button type="submit">
                         {" "}

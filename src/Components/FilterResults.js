@@ -29,9 +29,9 @@ export default function FilterResults(props) {
         },
     };
     useEffect(() => {
-        fetchResults();
-        setPage(1);
         setResults([]);
+        setPage(1);
+        fetchResults();
     }, [props]);
     useEffect(() => {
         fetchResults();

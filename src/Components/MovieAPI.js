@@ -4,6 +4,7 @@ import TrendingArtist from "./TrendingArtist";
 import PopularArtist from "./PopularArtist";
 import HomeList from "./HomeList";
 import Slider from "./Slider";
+import Footer from "./Footer";
 export default function MovieAPI() {
     return (
         <div>
@@ -21,6 +22,11 @@ export default function MovieAPI() {
                 endpoint="trending/tv/week"
             />
             <HomeList
+                type="Artist"
+                title="Trending Artists"
+                endpoint="trending/person/week"
+            />
+            <HomeList
                 type="Movie"
                 title="Top Rated Movies"
                 endpoint="movie/top_rated"
@@ -30,6 +36,7 @@ export default function MovieAPI() {
                 title="Top Rated Series"
                 endpoint="tv/top_rated"
             />
+
             <HomeList
                 type="Movie"
                 title="Popular Movies"
@@ -39,6 +46,11 @@ export default function MovieAPI() {
                 type="Series"
                 title="Popular Series"
                 endpoint="tv/popular"
+            />
+            <HomeList
+                type="Artist"
+                title="Popular Artists"
+                endpoint="person/popular"
             />
             <HomeList
                 type="Movie"
@@ -60,10 +72,7 @@ export default function MovieAPI() {
                 title="Upcoming Series"
                 endpoint="tv/on_the_air"
             />
-
-            <TrendingArtist />
-
-            <PopularArtist />
+            <Footer />
         </div>
     );
 }

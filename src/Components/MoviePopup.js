@@ -6,10 +6,17 @@ import { AiFillStar } from "react-icons/ai";
 import CardContainer from "./CardContainer";
 import { useSearchParams } from "react-router-dom";
 export default function MoviePopup(props) {
+    window.history.scrollRestoration = "auto";
+
     const [params, setParams] = useSearchParams();
-    const details = JSON.parse(params.get("details"));
+    // const paramDetails = params.get("details");
+    let details = {};
+    try {
+        details = JSON.parse(params.get("details"));
+    } catch (e) {
+        details = {};
+    }
     const type = params.get("type");
-    // const { details, type } = props;
     const [streamer, setStreamer] = useState({});
     const [director, setDirector] = useState([]);
     const [genreList, setGenreList] = useState([]);
@@ -64,7 +71,10 @@ export default function MoviePopup(props) {
                     const name = provider.provider_name;
                     set1.add({ logo, name });
                 });
-                setStreamer((prev) => ({ ...prev, free: Array.from(set1) }));
+                setStreamer((prev) => ({
+                    ...prev,
+                    free: Array.from(set1),
+                }));
             }
             if (result.rent) {
                 const set2 = new Set();
@@ -73,7 +83,10 @@ export default function MoviePopup(props) {
                     const name = provider.provider_name;
                     set2.add({ logo, name });
                 });
-                setStreamer((prev) => ({ ...prev, rent: Array.from(set2) }));
+                setStreamer((prev) => ({
+                    ...prev,
+                    rent: Array.from(set2),
+                }));
             }
             if (result.buy) {
                 const set3 = new Set();
