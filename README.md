@@ -2,7 +2,7 @@
 
 Welcome to MovieBase, a React-based website that allows users to discover, search, and filter movies, series, and artists, get streaming details using data from The Movie Database (TMDB) API.
 
-###[Live Demo](https://moviebase-by-rajeshwar.netlify.app/)
+### [Live Demo](https://moviebase-by-rajeshwar.netlify.app/)
 
 ## Features
 
