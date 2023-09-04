@@ -2,6 +2,8 @@
 
 Welcome to MovieBase, a React-based website that allows users to discover, search, and filter movies, series, and artists, get streaming details using data from The Movie Database (TMDB) API.
 
+###[Live Demo](https://moviebase-by-rajeshwar.netlify.app/)
+
 ## Features
 
 ### Homepage
@@ -26,13 +28,13 @@ Welcome to MovieBase, a React-based website that allows users to discover, searc
 
 ## Getting Started
 
-To get started with Movie Explorer, follow these steps:
+To get started with MovieBase, follow these steps:
 
 1. Clone the repository:
 git clone https://github.com/RajeshwarReddyKolimi/MovieBase.git
 
 2. Install dependencies:
-`cd moviebase`
+`cd MovieBase`
 `npm install`
 
 3. Get your TMDB API Key:
