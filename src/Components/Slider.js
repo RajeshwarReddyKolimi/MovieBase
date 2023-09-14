@@ -42,7 +42,6 @@ export default function Slider() {
             const data = await response.json();
             const results = await data.results;
             setList((prev) => [...results]);
-            console.log(results);
         } catch (err) {
             console.error(err);
         }

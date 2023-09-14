@@ -8,8 +8,6 @@ import { useSearchParams } from "react-router-dom";
 export default function ArtistPopup(props) {
     const [params, setParams] = useSearchParams();
     const details = JSON.parse(params.get("details"));
-    console.log(details);
-    // const { details } = props;
     const [movieList, setMovieList] = useState([]);
     const [TVList, setTVList] = useState([]);
     const [bio, setBio] = useState({});
@@ -26,7 +24,8 @@ export default function ArtistPopup(props) {
         getMovieList();
         getDetails();
         getTVList();
-    }, [details]);
+        window.scrollTo(0, 0);
+    }, [params]);
     async function getDetails() {
         if (!details) return;
         try {

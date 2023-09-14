@@ -6,7 +6,6 @@ import { IoIosMenu } from "react-icons/io";
 import { CgSearch } from "react-icons/cg";
 export default function Header(props) {
     const [showItems, setShowItems] = useState(false);
-    console.log(props.selected);
     return (
         <nav className="header">
             <li className="nav-menu-container">

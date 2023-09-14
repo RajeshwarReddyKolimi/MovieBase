@@ -6,16 +6,17 @@ import { AiFillStar } from "react-icons/ai";
 import CardContainer from "./CardContainer";
 import { useSearchParams } from "react-router-dom";
 export default function MoviePopup(props) {
-    window.history.scrollRestoration = "auto";
-
     const [params, setParams] = useSearchParams();
-    // const paramDetails = params.get("details");
     let details = {};
-    try {
-        details = JSON.parse(params.get("details"));
-    } catch (e) {
-        details = {};
-    }
+    useEffect(() => {
+        try {
+            details = JSON.parse(params.get("details"));
+        } catch (e) {
+            details = {};
+        }
+        window.scrollTo(0, 0);
+    }, [params]);
+
     const type = params.get("type");
     const [streamer, setStreamer] = useState({});
     const [director, setDirector] = useState([]);
@@ -28,7 +29,7 @@ export default function MoviePopup(props) {
     const [seasons, setSeasons] = useState(null);
     const [episodes, setEpisodes] = useState(null);
     const [opened, setOpened] = useState(false);
-
+    const [image, setImage] = useState("");
     const apiKey = env.API_KEY;
     const apiToken = env.API_TOKEN;
     const options = {
@@ -39,10 +40,10 @@ export default function MoviePopup(props) {
         },
     };
     useEffect(() => {
-        if (!details) return;
         setOpened(true);
         if (type === "Movie") {
-            setYear(details.release_date.substring(0, 4));
+            if (details.release_date)
+                setYear(details.release_date.substring(0, 4));
             setTitle(details.title);
             getMovieDetails();
         } else {
@@ -51,7 +52,7 @@ export default function MoviePopup(props) {
         getStreamer();
         getSimilar();
         getCast();
-    }, [details]);
+    }, [params]);
     async function getStreamer(e) {
         let url = "";
         if (type === "Movie")
@@ -119,7 +120,7 @@ export default function MoviePopup(props) {
             const response = await fetch(url, options);
             const data = await response.json();
             const result = await data.results;
-            setSimilar([...result]);
+            if (result) setSimilar([...result]);
         } catch (err) {
             console.error(err);
         }
@@ -133,7 +134,7 @@ export default function MoviePopup(props) {
             const response = await fetch(url, options);
             const data = await response.json();
             const result = await data.cast;
-            setCast([...result]);
+            if (result) setCast([...result]);
         } catch (err) {
             console.error(err);
         }
@@ -145,11 +146,19 @@ export default function MoviePopup(props) {
                 options
             );
             const data = await response.json();
-            setDirector([...data.created_by]);
+            if (data.created_by) setDirector([...data.created_by]);
+            if (data.backdrop_path)
+                setImage(
+                    `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+                );
+            else
+                setImage(
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
+                );
             setTitle(data.name);
             setSeasons(data.number_of_seasons);
             setEpisodes(data.number_of_episodes);
-            setGenreList([...data.genres]);
+            if (data.genres) setGenreList([...data.genres]);
             setYear(() => {
                 if (
                     data.first_air_date &&
@@ -176,11 +185,19 @@ export default function MoviePopup(props) {
                 options
             );
             const data = await response.json();
+            if (data.backdrop_path)
+                setImage(
+                    `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+                );
+            else
+                setImage(
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
+                );
             setTitle(data.title);
             if (data.release_date) setYear(data.release_date.substring(0, 4));
             setRuntime(data.runtime);
-            setGenreList([...data.genres]);
-            setDirector([...data.created_by]);
+            if (data.genres) setGenreList([...data.genres]);
+            if (data.created_by) setDirector([...data.created_by]);
         } catch (err) {
             console.error(err);
         }
@@ -188,15 +205,7 @@ export default function MoviePopup(props) {
     return (
         <div className={`movie-popup ${opened && "movie-popup-opened"}`}>
             <div className="movie-popup-buffer">
-                <img
-                    className="movie-image"
-                    src={`${
-                        details && details.backdrop_path !== null
-                            ? `https://image.tmdb.org/t/p/original${details.backdrop_path}`
-                            : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAACFCAMAAABv9uS0AAAAA1BMVEUAAACnej3aAAAANUlEQVR4nO3BMQEAAADCoPVPbQZ/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAweyEAASeKOE8AAAAASUVORK5CYII="
-                    }`}
-                    alt={title}
-                />
+                <img className="movie-image" src={`${image}`} alt={title} />
                 <div className="image-overlay"></div>
                 <div className="movie-details">
                     <div className="movie-details-buffer">
@@ -204,9 +213,9 @@ export default function MoviePopup(props) {
                         <div className="movie-header">
                             <h4 className="movie-year">{year}</h4>
                             <h4 className="movie-rating">
-                                {details &&
-                                    details.vote_average &&
-                                    details.vote_average.toFixed(1)}
+                                {(details &&
+                                    details.vote_average) ?
+                                    details.vote_average.toFixed(1):'0'}
                                 <AiFillStar
                                     style={{ color: "rgb(226, 176, 49)" }}
                                 />

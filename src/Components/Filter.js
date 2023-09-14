@@ -68,10 +68,6 @@ export default function Filter(props) {
                     a.provider_name.localeCompare(b.provider_name)
                 );
             }
-            // results.sort((a, b) =>
-            //     b.provider_name.localeCompare(a.provider_name)
-            // );
-
             setter((prev) => [...results]);
         } catch (err) {
             console.error(err);

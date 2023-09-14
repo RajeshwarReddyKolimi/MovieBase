@@ -58,7 +58,6 @@ export default function Search() {
                 `https://api.themoviedb.org/3/search/${selected}?query=${query}&page=${page}`,
                 options
             );
-            console.log(selected);
             const data = await response.json();
             const results = await data.results;
             if (results.length < 20) setShowMore(false);
